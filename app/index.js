@@ -139,6 +139,19 @@ exports.handler = async (event) => {
         };
     }
 
+    // handle original exists images
+    if (sizes[0] === 'origin') {
+      return {
+        statusCode: 200,
+        body: (Buffer.from(originalImage.Body)).toString('base64'),
+        isBase64Encoded: true,
+        headers: {
+          'Content-Type': existingResized.ContentType,
+          'Cache-Control': DEFAULT_CACHE_HEADER
+        }
+      };
+    }
+
     const width = sizes[0] === 'auto' ? null : parseInt(sizes[0]);
     const height = sizes[1] === 'auto' ? null : parseInt(sizes[1]);
     const fit = action || 'cover';
